@@ -1,0 +1,12 @@
+﻿@inject NavigationManager NavigationManager
+
+@code {
+    [Parameter]
+    public string LoginRoute { get; set; } = "/Account/Login";
+
+    protected override void OnInitialized()
+    {
+        var loginUrl = $"{LoginRoute}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
+        NavigationManager.NavigateTo(loginUrl, forceLoad: true);
+    }
+}
