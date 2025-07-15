@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.17" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.17" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.17" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.17" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.17" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SimpleBlazorAuthentication.BlazorClient\SimpleBlazorAuthentication.BlazorClient.csproj" />
+	</ItemGroup>
+
+</Project>
