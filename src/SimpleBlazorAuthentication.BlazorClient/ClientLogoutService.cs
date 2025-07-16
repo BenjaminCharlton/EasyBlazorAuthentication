@@ -1,4 +1,16 @@
 ﻿namespace SimpleBlazorAuthentication.BlazorClient;
+
+/// <summary>
+/// Provides functionality for a Blazor WebAssembly client to log out a client from the application, clearing security tokens and navigating to a
+/// specified return URL.
+/// </summary>
+/// <remarks>This service handles the logout process by clearing the security token, sending a logout request to
+/// the server, and navigating to a return URL. It ensures that an anti-forgery token is included in the logout request
+/// for security purposes.</remarks>
+/// <param name="tokenClient">An <see cref="ISecurityTokenClient"/> for clearing tokens from storage.</param>
+/// <param name="navigationManager">A <see cref="NavigationManager"/> to redirect the user after a successful logout.</param>
+/// <param name="antiforgeryStateProvider">A <see cref="AntiforgeryStateProvider" /> to provide an anti-forgery token to the server's logout endpoint.</param>
+/// <param name="httpClient">An <see cref="HttpClient" /> to call the server's logout endpoint.</param>
 public sealed class ClientLogoutService(
     ISecurityTokenClient tokenClient,
     NavigationManager navigationManager,
@@ -10,6 +22,7 @@ public sealed class ClientLogoutService(
     private readonly AntiforgeryStateProvider _antiforgeryStateProvider = antiforgeryStateProvider ?? throw new ArgumentNullException(nameof(antiforgeryStateProvider))
 ;
     private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+
 
     public async Task LogoutAsync()
     {
