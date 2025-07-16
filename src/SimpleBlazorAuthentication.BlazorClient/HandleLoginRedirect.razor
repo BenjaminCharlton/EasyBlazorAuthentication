@@ -8,8 +8,6 @@
     [SupplyParameterFromQuery]
     public string? ReturnUrl { get; set; }
 
-    [Parameter]
-    public RenderFragment<Func<Task>>? ChildContent { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

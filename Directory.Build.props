@@ -1,0 +1,29 @@
+﻿<Project>
+	<PropertyGroup Label="Build configuration">
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Nuget package data">
+		<PackageId>$(MSBuildProjectName)</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Benjamin Charlton</Authors>
+		<Company>Just me</Company>
+		<Description>Really quick, simple and secure authentication for Blazor Server and Blazor WebAssembly applications using ASP .NET Core Identity, HTTP-only cookies and JWTs with cyclical refresh.</Description>
+		<PackageTags>blazor;authentication;webassembly;identity;jwt;httponly;cookie;token</PackageTags>
+		<RepositoryUrl>https://github.com/BenjaminCharlton/EasyBlazorAuthentication</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/BenjaminCharlton/EasyBlazorAuthentication</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Copyright>Copyright © $(Year) Benjamin Charlton</Copyright>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<ItemGroup Label="NuGet package content">
+		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+</Project>
