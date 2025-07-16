@@ -21,7 +21,7 @@ Setting up authentication has been painful for as long as I've been programming 
 Microsoft made things easier in 2016 with templates that included individual user accounts using ASP.NET Core Identity.
 But even now (mid-2025), those templates don't wire up a client-side app, a web API, and a token-issuing authority (like a server-hosted Blazor app) together with CORS and sample API calls and stuff.
 
-You still need to connect Identity, JWTs, refresh tokens, CORS, antiforgery protection, cookie handling, and client-side auth state management — manually. And that takes hours, sometimes days.
+You still need to connect Identity, JWTs, refresh tokens, CORS, antiforgery protection, cookie handling, and client-side auth state management manually. And that takes hours, sometimes days.
 
 If you're not an expert, it's genuinely daunting. Debugging it always felt like I was groping around in the dark.
 
@@ -30,7 +30,7 @@ Couldn't they just give us something out of the box? They've always said, *There
 To that I say: *poppycock*. **SimpleBlazorAuthentication** doesn't pretend to be a one-size-fits-all solution.
 It's one-size-that-fits-you-at-the-beginning-of-your-project-and-might-even-fit-forever.
 
-## Plays nicely with Aspire — but not tied to it
+## Plays nicely with Aspire - but not tied to it
 
 I now use [.NET Aspire](https://devblogs.microsoft.com/dotnet/introducing-aspire/) on all my projects.
 I developed another library - [Aspire4Wasm](https://github.com/BenjaminCharlton/Aspire4Wasm) - to make Aspire easy to use with hosted and stand-alone Blazor WebAssembly projects.
@@ -84,4 +84,4 @@ As stated earlier, **SimpleBlazorAuthentication** is an authentication starter k
 
 ## Contributing
 The goal is making application security quick and easy for a new project, not creating a fully-featured system like another Duende Identity Server.
-This is a hobby project. I welcome improvements that reduce friction. If you spot a bug or want to add a feature, I'd love your help — just open a pull request.
+This is a hobby project. I welcome improvements that reduce friction. If you spot a bug or want to add a feature, I'd love your help - just open a pull request.
