@@ -11,17 +11,28 @@ using System.Text;
 namespace SimpleBlazorAuthentication.BlazorHost;
 
 internal sealed class JwtService<TUser, TDbContext>(
-    UserManager<TUser> users,
+    UserManager<TUser> userManager,
     TDbContext db,
     IOptions<JwtOptions> jwtOptions,
-    IHttpContextAccessor http) : IAuthTokenService
+    IHttpContextAccessor httpContextAccessor) : JwtService<TUser, string, TDbContext>(userManager, db, jwtOptions, httpContextAccessor)
     where TUser : IdentityUser
-    where TDbContext : JwtIdentityDbContext<TUser>
+    where TDbContext : IJwtDbContext
 {
-    private readonly UserManager<TUser> _users = users ?? throw new ArgumentNullException(nameof(users));
+}
+
+internal class JwtService<TUser, TKey, TDbContext>(
+UserManager<TUser> userManager,
+TDbContext db,
+IOptions<JwtOptions> jwtOptions,
+IHttpContextAccessor httpContextAccessor) : IAuthTokenService
+where TUser : IdentityUser<TKey>
+where TKey : IEquatable<TKey>
+where TDbContext : IJwtDbContext
+{
+    private readonly UserManager<TUser> _users = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly TDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
     private readonly JwtOptions _jwtOptions = jwtOptions.Value ?? throw new ArgumentNullException(nameof(jwtOptions));
-    private readonly IHttpContextAccessor _http = http ?? throw new ArgumentNullException(nameof(http));
+    private readonly IHttpContextAccessor _http = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
     public async Task<AccessTokenResponse> IssueAsync(ClaimsPrincipal principal)
     {
@@ -77,28 +88,28 @@ internal sealed class JwtService<TUser, TDbContext>(
         DeleteRefreshCookie();
     }
 
-    private RefreshToken<TUser> NewRefreshToken(string userId, int size = 64)
+    private RefreshToken NewRefreshToken(TKey userId, int size = 64)
     {
         var bytes = new byte[size];
         System.Security.Cryptography.RandomNumberGenerator.Fill(bytes);
 
-        return new RefreshToken<TUser>
+        return new RefreshToken
         {
-            UserId = userId,
+            UserId = userId.ToString()!,
             Token = Convert.ToBase64String(bytes),
             Created = DateTimeOffset.UtcNow,
             Expires = DateTimeOffset.UtcNow.AddDays(_jwtOptions.RefreshTokenLifetimeDays)
         };
     }
 
-    private string BuildJwt(string userId, string? userName)
+    private string BuildJwt(TKey userId, string? userName)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId),
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()!),
             new Claim(JwtRegisteredClaimNames.UniqueName, userName ?? "")
         };
 
@@ -112,7 +123,7 @@ internal sealed class JwtService<TUser, TDbContext>(
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private void SetRefreshCookie(RefreshToken<TUser> refreshToken)
+    private void SetRefreshCookie(RefreshToken refreshToken)
     {
         _http.HttpContext!.Response.Cookies.Delete(
             CookieNames.RefreshToken,

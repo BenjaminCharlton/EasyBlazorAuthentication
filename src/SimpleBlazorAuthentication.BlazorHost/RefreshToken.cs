@@ -7,7 +7,7 @@ namespace SimpleBlazorAuthentication.BlazorHost;
 /// re-authenticate. This record includes information about the token's expiration, revocation status, and the user it
 /// is associated with.</remarks>
 /// <typeparam name="TUser">The type of the user associated with the refresh token.</typeparam>
-public record RefreshToken<TUser> where TUser : class
+public record RefreshToken
 {
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
@@ -38,9 +38,4 @@ public record RefreshToken<TUser> where TUser : class
     /// Gets or sets the date and time when the entity was created.
     /// </summary>
     public DateTimeOffset Created { get; set; }
-
-    /// <summary>
-    /// Gets or sets the user associated with the current context, mapped by <see cref="UserId"/>. Can be null if not explicitly loaded by EFCore.
-    /// </summary>
-    public TUser User { get; set; } = default!;
 }
