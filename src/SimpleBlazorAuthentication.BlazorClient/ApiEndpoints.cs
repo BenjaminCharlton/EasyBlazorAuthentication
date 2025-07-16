@@ -6,7 +6,7 @@
 /// <remarks>This class contains string constants representing the paths for various authentication-related API
 /// endpoints. These constants can be used to ensure consistency and avoid hardcoding endpoint paths throughout the
 /// application.</remarks>
-public static class ApiEndpoints
+internal static class ApiEndpoints
 {
     /// <summary>
     /// Represents the endpoint for generating a JSON Web Token (JWT).

@@ -5,7 +5,7 @@
 /// </summary>
 /// <remarks>This class contains constants representing common HTTP header names, which can be used to ensure
 /// consistency and avoid typos when working with headers in HTTP requests and responses.</remarks>
-public static class HeaderNames
+internal static class HeaderNames
 {
     /// <summary>
     /// The HTTP header name of the antiforgery token used for request verification.

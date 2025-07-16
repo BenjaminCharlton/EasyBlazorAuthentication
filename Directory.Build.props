@@ -7,7 +7,8 @@
 
 	<PropertyGroup Label="Nuget package data">
 		<PackageId>$(MSBuildProjectName)</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
+		<PackageReleaseNotes>Made some APIs internal, reducing surface area, so that consumers would be free to use common naming conventions without conflicts.</PackageReleaseNotes>
 		<Authors>Benjamin Charlton</Authors>
 		<Company>Just me</Company>
 		<Description>Really quick, simple and secure authentication for Blazor Server and Blazor WebAssembly applications using ASP .NET Core Identity, HTTP-only cookies and JWTs with cyclical refresh.</Description>
