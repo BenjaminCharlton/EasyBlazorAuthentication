@@ -36,8 +36,8 @@ public static class AuthenticationWebApplicationBuilderExtensions
     public static WebApplicationBuilder AddSimpleAuthentication<TEmailSender, TDbContext, TUser>(
         this WebApplicationBuilder builder)
         where TEmailSender : class, IEmailSender<TUser>
-        where TDbContext : IdentityDbContext<TUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IJwtDbContext
-        where TUser : IdentityUser
+        where TDbContext : IdentityDbContext<TUser, IdentityRole<string>, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IJwtDbContext
+        where TUser : IdentityUser<string>
     {
         return builder.AddSimpleAuthentication<TEmailSender, TDbContext, DefaultUserInfo, TUser>(
             CreateDefaultUserInfo);
@@ -61,10 +61,10 @@ public static class AuthenticationWebApplicationBuilderExtensions
         this WebApplicationBuilder builder,
         Func<ClaimsPrincipal, IdentityOptions, TUserInfo?> userInfoFactory)
         where TEmailSender : class, IEmailSender<TUser>
-        where TDbContext : IdentityDbContext<TUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IJwtDbContext
-        where TUser : IdentityUser
+        where TDbContext : IdentityDbContext<TUser, IdentityRole<string>, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IJwtDbContext
+        where TUser : IdentityUser<string>
     {
-        return builder.AddSimpleAuthentication<TEmailSender, TDbContext, TUserInfo, TUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(
+        return builder.AddSimpleAuthentication<TEmailSender, TDbContext, TUserInfo, TUser, IdentityRole<string>, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(
             userInfoFactory);
     }
 

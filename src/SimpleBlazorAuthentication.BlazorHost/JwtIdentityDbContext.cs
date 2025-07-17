@@ -12,7 +12,7 @@ namespace SimpleBlazorAuthentication.BlazorHost;
 /// <see cref="IdentityDbContext{TUser}"/> to include functionality for handling refresh tokens, which are stored in
 /// the <see cref="RefreshTokens"/> DbSet.</remarks>
 /// <param name="options">The options to be used by a <see cref="DbContext" /></param>
-public class JwtIdentityDbContext(DbContextOptions options) : JwtIdentityDbContext<IdentityUser>(options)
+public class JwtIdentityDbContext(DbContextOptions options) : JwtIdentityDbContext<IdentityUser<string>>(options)
 {
 }
 
@@ -29,7 +29,7 @@ public class JwtIdentityDbContext(DbContextOptions options) : JwtIdentityDbConte
 /// <param name="options">The options to be used by a <see cref="DbContext" /></param>
 public class JwtIdentityDbContext<TUser>(DbContextOptions options)
     : JwtIdentityDbContext<TUser, string>(options)
-    where TUser : IdentityUser
+    where TUser : IdentityUser<string>
 { }
 
 /// <summary>
@@ -38,7 +38,6 @@ public class JwtIdentityDbContext<TUser>(DbContextOptions options)
 /// <remarks>This context extends <see cref="IdentityDbContext{TUser}"/> to include functionality for handling
 /// refresh tokens, which are stored in the <see cref="RefreshTokens"/> DbSet.</remarks>
 /// <typeparam name="TUser">The type of user entity, which must inherit from <see cref="IdentityUser"/>.</typeparam>
-/// <typeparam name="TRole">The type representing a role in the identity system, inheriting from <see cref="IdentityRole{TKey}"/>.</typeparam>
 /// <typeparam name="TKey">The type of the primary key for users and roles, such as <c>string</c> or <c>Guid</c>.</typeparam>
 /// <remarks>This context is configured to work with ASP.NET Core Identity and JWT authentication. It provides the
 /// necessary infrastructure to manage user identities, roles, and claims within a database. It extends 
@@ -109,19 +108,19 @@ public class JwtIdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUs
     /// Saves all changes made in this context to the database.
     /// </summary>
     /// <param name="cancellationToken">
-    /// A <see cref="System.Threading.CancellationToken"/> to observe while waiting for the task to complete.
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
     /// </param>
     /// <returns>
     /// A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.
     /// </returns>
-    /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+    /// <exception cref="DbUpdateException">
     /// An error is encountered while saving to the database.
     /// </exception>
-    /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+    /// <exception cref="DbUpdateConcurrencyException">
     /// A concurrency violation is encountered while saving to the database. A concurrency violation occurs when an unexpected number of rows are affected during save. This is usually because the data in the database has been modified since it was loaded into memory.
     /// </exception>
-    /// <exception cref="System.OperationCanceledException">
-    /// If the <see cref="System.Threading.CancellationToken"/> is canceled.
+    /// <exception cref="OperationCanceledException">
+    /// If the <see cref="CancellationToken"/> is canceled.
     /// </exception>
     /// <remarks>
     /// This method will automatically call <see cref="Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges"/> to discover any changes to entity instances before saving to the underlying database.

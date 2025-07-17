@@ -7,7 +7,7 @@
 
 	<PropertyGroup Label="Nuget package data">
 		<PackageId>$(MSBuildProjectName)</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.1.2</Version>
 		<PackageReleaseNotes>Made some APIs internal, reducing surface area, so that consumers would be free to use common naming conventions without conflicts.</PackageReleaseNotes>
 		<Authors>Benjamin Charlton</Authors>
 		<Company>Just me</Company>
