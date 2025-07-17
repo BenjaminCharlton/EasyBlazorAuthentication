@@ -19,4 +19,18 @@
 	  <ProjectReference Include="..\SimpleBlazorAuthentication.BlazorClient\SimpleBlazorAuthentication.BlazorClient.csproj" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="9.0.7" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="8.0.7" />
+	</ItemGroup>
+
 </Project>

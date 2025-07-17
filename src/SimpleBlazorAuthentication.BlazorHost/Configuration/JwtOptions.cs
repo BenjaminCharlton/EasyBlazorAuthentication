@@ -1,4 +1,4 @@
-namespace SimpleBlazorAuthentication.BlazorHost;
+namespace SimpleBlazorAuthentication.BlazorHost.Configuration;
 
 internal sealed class JwtOptions
 {

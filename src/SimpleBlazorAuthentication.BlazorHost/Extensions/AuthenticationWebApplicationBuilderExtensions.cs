@@ -1,14 +1,17 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SimpleBlazorAuthentication.BlazorClient;
 using SimpleBlazorAuthentication.BlazorHost;
+using SimpleBlazorAuthentication.BlazorHost.Configuration;
 using System.Security.Claims;
 
 namespace Microsoft.AspNetCore.Builder;
@@ -158,12 +161,15 @@ public static class AuthenticationWebApplicationBuilderExtensions
         where TRoleClaim : IdentityRoleClaim<TKey>
         where TUserToken : IdentityUserToken<TKey>
     {
-        builder.Services.AddScoped<TEmailSender, TEmailSender>();
+        builder.Services.AddSingleton<TEmailSender, TEmailSender>();
+        builder.Services.Configure<SimpleBlazorAuthentication.BlazorHost.Configuration.AuthenticationOptions>(
+            builder.Configuration.GetSection(SimpleBlazorAuthentication.BlazorHost.Configuration.AuthenticationOptions.Position));
+
         builder.AddAntiforgerySupport();
         builder.AddJwtAuthentication<TUser, TKey, TDbContext>();
         builder.Services.ConfigureIdentityCore<TUser, TDbContext>();
 
-        builder.Services.ConfigureAuthentication();
+        builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.ConfigureAuthenticationCookies();
 
         builder.Services.AddScoped<ILogoutService, HostLogoutService<TUser>>();
@@ -181,15 +187,12 @@ public static class AuthenticationWebApplicationBuilderExtensions
 
     private static DefaultUserInfo CreateDefaultUserInfo(ClaimsPrincipal principal, IdentityOptions options)
     {
-        var userId = principal.FindFirst(options.ClaimsIdentity.UserIdClaimType)?.Value;
-        var email = principal.FindFirst(options.ClaimsIdentity.EmailClaimType)?.Value;
-
-        if (string.IsNullOrEmpty(userId))
+        if (!TryGetClaim(principal, options.ClaimsIdentity.UserIdClaimType, out var userId))
         {
             throw new InvalidOperationException("Authenticated user is missing required UserId claim.");
         }
 
-        if (string.IsNullOrEmpty(email))
+        if (!TryGetClaim(principal, options.ClaimsIdentity.EmailClaimType, out var email))
         {
             throw new InvalidOperationException("Authenticated user is missing required Email claim.");
         }
@@ -201,6 +204,12 @@ public static class AuthenticationWebApplicationBuilderExtensions
         };
     }
 
+    private static bool TryGetClaim(ClaimsPrincipal principal, string claimType, out string value)
+    {
+        value = principal.Claims.FirstOrDefault(c => c.Type == claimType)?.Value ?? string.Empty;
+        return !string.IsNullOrEmpty(value);
+    }
+
     private static WebApplicationBuilder AddAntiforgerySupport(this WebApplicationBuilder builder)
     {
         builder.Services.AddAntiforgery(o =>
@@ -209,13 +218,6 @@ public static class AuthenticationWebApplicationBuilderExtensions
         });
 
         return builder;
-    }
-
-    private static WebApplicationBuilder AddJwtAuthentication<TUser, TDbContext>(this WebApplicationBuilder builder)
-    where TUser : IdentityUser
-    where TDbContext : IJwtDbContext
-    {
-        return builder.AddJwtAuthentication<TUser, string, TDbContext>();
     }
 
     private static WebApplicationBuilder AddJwtAuthentication<TUser, TKey, TDbContext>(this WebApplicationBuilder builder)
@@ -243,16 +245,25 @@ public static class AuthenticationWebApplicationBuilderExtensions
             .AddDefaultTokenProviders();
     }
 
-    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthentication(options =>
+        services.ConfigureLocalAuthentication()
+            .ConfigureThirdPartyAuthentication(configuration);
+
+        return services;
+    }
+
+    private static AuthenticationBuilder ConfigureLocalAuthentication(this IServiceCollection services)
+    {
+        var authBuilder = services.AddAuthentication(options =>
         {
             options.DefaultScheme = IdentityConstants.ApplicationScheme;
             options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-        })
-            .AddIdentityCookies();
+        });
 
-        return services;
+        authBuilder.AddIdentityCookies();
+
+        return authBuilder;
     }
 
     private static WebApplicationBuilder ConfigureAuthenticationCookies(this WebApplicationBuilder builder)
@@ -263,7 +274,7 @@ public static class AuthenticationWebApplicationBuilderExtensions
             {
                 // Return 401 for API requests instead of redirecting
                 if (context.Request.Path.StartsWithSegments(ApiEndpoints.GenerateJwt) ||
-                    context.Request.Headers.Accept == "application/json")
+                    context.Request.Headers.Accept.Contains("application/json"))
                 {
                     return Results.Unauthorized()
                                   .ExecuteAsync(context.HttpContext);
