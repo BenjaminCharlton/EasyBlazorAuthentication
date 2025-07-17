@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBlazorAuthentication.WebApi", "src\SimpleBlazorAuthentication.WebApi\SimpleBlazorAuthentication.WebApi.csproj", "{0207FE97-8850-38B0-78DD-0ADD922A811B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{0427DF4C-8D17-C97E-D645-D72BE1CC4DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0427DF4C-8D17-C97E-D645-D72BE1CC4DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0427DF4C-8D17-C97E-D645-D72BE1CC4DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0207FE97-8850-38B0-78DD-0ADD922A811B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0207FE97-8850-38B0-78DD-0ADD922A811B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0207FE97-8850-38B0-78DD-0ADD922A811B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0207FE97-8850-38B0-78DD-0ADD922A811B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F9EA79A8-12FB-693D-BFAB-8D76C46D5635} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0427DF4C-8D17-C97E-D645-D72BE1CC4DD0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0207FE97-8850-38B0-78DD-0ADD922A811B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {348A5BD0-5C89-4176-95AE-58B268BCE6CE}
